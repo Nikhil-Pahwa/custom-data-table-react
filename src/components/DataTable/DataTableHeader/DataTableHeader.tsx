@@ -9,7 +9,7 @@ export interface ITableHeaderProperties {
 
 const DataTableHeader: React.FC<ITableHeaderProperties> = ({ columns }) => {
     const getHeaderStyle = (column: Column) => {
-        return { width: (column.width) ? column.width : 'auto' };
+        return { minWidth: (column.width) ? column.width : 'auto' };
     };
 
     const renderTableHeaders = () => {

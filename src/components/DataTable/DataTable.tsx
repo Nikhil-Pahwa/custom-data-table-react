@@ -39,7 +39,7 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
     const handleTableRowClick = (event: any) => {
         const target = event.target.parentElement;
         if (target.nodeName === 'TR') {
-            const selectedRow = rows.find((row) => row.id === target.getAttribute('data-row-id'));
+            const selectedRow = rows.find((row) => row.id == target.getAttribute('data-row-id'));
             if (selectedRow) {
                 onRowClick(selectedRow, target.getAttribute('data-row-index'));
             }

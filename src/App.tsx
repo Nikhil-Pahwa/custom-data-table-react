@@ -25,7 +25,7 @@ function App() {
     'id': 'title',
     'label': 'Title',
     'numeric': false,
-    'width': '450px',
+    'width': '1550px',
   },
   {
     'id': 'url',
@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     const sources = new MockDataSource();
     sources.fetch().then((data: any) => {
-      setMockRowData(data.slice(0, 5));
+      setMockRowData(data.slice(0, 100));
       // setMockRowData(data);
     });
   }, []);

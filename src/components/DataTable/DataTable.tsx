@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import DataTableHeader from './DataTableHeader/DataTableHeader';
 import DataTableBody from './DataTableBody/DataTableBody';
@@ -15,11 +16,26 @@ export interface ITableProperties {
 }
 
 const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSelectionChanges }) => {
-    let [selectedItemsIds, setSelectedItemsIds] = useState(Array());
 
-    useEffect(() => {
-        onSelectionChanges([...selectedItemsIds]);
-    }, [selectedItemsIds]);
+    const DATA_LENGTH = 15;
+    const [partialDataSet, setPartialDataSet] = useState(Array())
+    const [counter, setCounter] = useState(0);
+
+    const [selectedItemsIds, setSelectedItemsIds] = useState(Array());
+
+    const setNextDataSet = () => {
+        if (rows.length > (counter + DATA_LENGTH)) {
+            const nextDataSet = rows.slice(counter, counter + DATA_LENGTH);
+            if (partialDataSet.length > 0) {
+                // setPartialDataSet([...partialDataSet, nextDataSet]);
+                setPartialDataSet(partialDataSet.concat(nextDataSet));
+            } else {
+                setPartialDataSet([...nextDataSet]);
+            }
+
+            setCounter(counter + DATA_LENGTH);
+        }
+    };
 
     const handleCheckboxClicks = (event: any) => {
         const isChecked = event.target.checked;
@@ -54,12 +70,27 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
         }
     };
 
+    useEffect(() => {
+        onSelectionChanges([...selectedItemsIds]);
+    }, [selectedItemsIds]);
+
+    useEffect(() => {
+        setNextDataSet();
+    }, [rows]);
+
     return (
         <div className="data-table">
-            <table onClick={onTableClick}>
-                <DataTableHeader columns={columns} />
-                <DataTableBody rows={rows} />
-            </table>
+            <InfiniteScroll
+                dataLength={partialDataSet.length}
+                next={setNextDataSet}
+                hasMore={true}
+                loader={<h4>Loading...</h4>}
+            >
+                <table onClick={onTableClick}>
+                    <DataTableHeader columns={columns} />
+                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} />}
+                </table>
+            </InfiniteScroll>
         </div>
     );
 }

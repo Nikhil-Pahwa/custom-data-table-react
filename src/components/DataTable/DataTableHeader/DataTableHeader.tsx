@@ -19,8 +19,10 @@ const DataTableHeader: React.FC<ITableHeaderProperties> = ({ columns }) => {
     }
     return (
         <thead>
-            <th><DataTableCheckbox /></th>
-            {renderTableHeaders()}
+            <tr>
+                <th><DataTableCheckbox /></th>
+                {renderTableHeaders()}
+            </tr>
         </thead>
     );
 }

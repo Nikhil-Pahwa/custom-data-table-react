@@ -1,9 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import './App.scss';
 import DataTable from './components/DataTable/DataTable';
 
 function App() {
+  let [selectedRow, setSelectedRow] = useState(null);
+  let [selectedRowIndex, setSelectedRowIndex] = useState(null);
+
   return (
     <div className="App">
       <DataTable columns={[{
@@ -23,7 +25,20 @@ function App() {
         }, {
           'id': 'some_id2',
           'price': '$15.5'
-        }]} />
+        }]}
+        onRowClick={(row: any, index: any) => {
+          setSelectedRow(row);
+          setSelectedRowIndex(index);
+          console.log(row);
+        }} />
+      <div className="output">
+        {selectedRowIndex && (
+          <>
+            <p className='output__selectedRowIndex'>Row Index: {selectedRowIndex}</p>
+            <p className='output__selectedRow'>Selected Row: {JSON.stringify(selectedRow)}</p>
+          </>)
+        }
+      </div>
     </div>
   );
 }

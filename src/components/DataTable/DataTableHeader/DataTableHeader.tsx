@@ -1,3 +1,4 @@
+import DataTableCheckbox from '../DataTableCheckbox/DataTableCheckbox';
 import { Column } from '../types';
 
 import './DataTableHeader.scss';
@@ -18,7 +19,7 @@ const DataTableHeader: React.FC<ITableHeaderProperties> = ({ columns }) => {
     }
     return (
         <thead>
-            <th>[]</th>
+            <th><DataTableCheckbox /></th>
             {renderTableHeaders()}
         </thead>
     );

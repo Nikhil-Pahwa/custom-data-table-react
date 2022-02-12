@@ -5,6 +5,7 @@ import DataTable from './components/DataTable/DataTable';
 function App() {
   let [selectedRow, setSelectedRow] = useState(null);
   let [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  let [selectedItems, setSelectedItems] = useState([]);
 
   return (
     <div className="App">
@@ -29,17 +30,20 @@ function App() {
         onRowClick={(row: any, index: any) => {
           setSelectedRow(row);
           setSelectedRowIndex(index);
-          console.log(row);
-        }} />
-      <div className="output">
-        {selectedRowIndex && (
+        }}
+        onSelectionChanges={(selectedItems: any) => {
+          setSelectedItems(selectedItems);
+        }}
+      />
+      {(selectedRowIndex || selectedItems.length > 0) && <div className="output">
+        {selectedRowIndex &&
           <>
             <p className='output__selectedRowIndex'>Row Index: {selectedRowIndex}</p>
             <p className='output__selectedRow'>Selected Row: {JSON.stringify(selectedRow)}</p>
-          </>)
-        }
-      </div>
-    </div>
+          </>}
+        {selectedItems.length > 0 && <p className='output__selectedItems'>Selected Items: {selectedItems}</p>}
+      </div>}
+    </div >
   );
 }
 

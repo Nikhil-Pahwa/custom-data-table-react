@@ -1,3 +1,4 @@
+import DataTableCheckbox from '../DataTableCheckbox/DataTableCheckbox';
 import { Row } from '../types';
 
 import './DataTableBody.scss';
@@ -17,7 +18,7 @@ const DataTableBody: React.FC<ITableBodyProperties> = ({ rows }) => {
     const renderTableRows = () => {
         return rows.map((row: Row, index: number) => {
             return <tr data-row-index={index} data-row-id={row["id"]}>
-                <td>[]</td>
+                <td><DataTableCheckbox /></td>
                 {renderRowItem(row)}
             </tr>
         });

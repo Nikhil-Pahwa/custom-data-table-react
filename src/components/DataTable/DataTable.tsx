@@ -1,3 +1,5 @@
+import DataTableHeader from './DataTableHeader/DataTableHeader';
+import DataTableBody from './DataTableBody/DataTableBody';
 import { Row, Column } from './types';
 
 import './DataTable.scss';
@@ -11,20 +13,8 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows }) => {
     return (
         <div className="data-table">
             <table>
-                <thead>
-                    <th>name</th>
-                    <th>product</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>5 star</td>
-                        <td>chocolate</td>
-                    </tr>
-                    <tr>
-                        <td>safolla</td>
-                        <td>oil</td>
-                    </tr>
-                </tbody>
+                <DataTableHeader columns={columns} />
+                <DataTableBody rows={rows} />
             </table>
         </div>
     );

@@ -13,7 +13,7 @@ export interface IDataTableProperties {
     columns: Column[];
     rows: Row[];
     onRowClick: (rowData: Row, rowIndex: number) => void;
-    onSelectionChanges: (selectedRowsIds: string[]) => void;
+    onSelectionChanges: (selectedRowsIds: number[]) => void;
 }
 
 const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, onSelectionChanges }) => {
@@ -21,7 +21,8 @@ const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, 
     /*
     *   List of selected rows ids
     */
-    const [selectedRowsIds, setSelectedRowsIds] = useState<string[]>([]);
+    const [selectedRowsIds, setSelectedRowsIds] = useState<number[]>([]);
+    const [partialDataSetRowIds, setpartialDataSetRowIds] = useState<number[]>([]);
 
     /*
     *   Partial Data set states for infinte scrolling
@@ -34,9 +35,6 @@ const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, 
     * Columns which are numbered type for right alignment
     */
     const [numberTypeColumnsIndexes, setNumberTypeColumnsIndexes] = useState<number[]>([]);
-
-    const [isSelectedAll, setIsSelectedAll] = useState(false);
-    const [isControlledCheckbox, setIsControlledCheckbox] = useState(false);
 
     const getNextDataSet = () => {
         if (rows.length > 0) {
@@ -56,26 +54,23 @@ const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, 
 
     const handleCheckboxClick = (event: any) => {
         const isChecked = event.target.checked;
-        const dataRowId = event.target.parentElement.parentElement.getAttribute('data-row-id');
+        const dataRowId = event.target.parentElement.parentElement.getAttribute(CUSTOM_ATTRIBUTE_TYPES.ROWID);
 
         if (dataRowId) {
             if (isChecked) {
-                setSelectedRowsIds([...selectedRowsIds, dataRowId]);
+                setSelectedRowsIds([...selectedRowsIds, parseInt(dataRowId)]);
             } else {
-                const index = selectedRowsIds.indexOf(dataRowId);
+                const index = selectedRowsIds.indexOf(parseInt(dataRowId));
                 selectedRowsIds.splice(index, 1);
                 setSelectedRowsIds([...selectedRowsIds]);
             }
-            setIsControlledCheckbox(false);
         } else {
             // Select All Checkbox clicked
             if (isChecked) {
-                // setSelectedRowsIds([...partialDataSet]);
+                setSelectedRowsIds([...partialDataSetRowIds]);
             } else {
                 setSelectedRowsIds([]);
             }
-            setIsSelectedAll(isChecked);
-            setIsControlledCheckbox(true);
         }
     };
 
@@ -104,6 +99,8 @@ const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, 
 
     useEffect(() => {
         getNextDataSet();
+        const ids = rows.map((row) => row.id);
+        setpartialDataSetRowIds(ids);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rows]);
 
@@ -128,7 +125,7 @@ const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, 
             >
                 <table onClick={onTableClick}>
                     <DataTableHeader columns={columns} />
-                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} numberedColumn={numberTypeColumnsIndexes} isSelectedAll={isSelectedAll} isControlledCheckbox={isControlledCheckbox} />}
+                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} numberedColumn={numberTypeColumnsIndexes} selectedRowsIds={selectedRowsIds} />}
                 </table>
             </InfiniteScroll>
         </div>

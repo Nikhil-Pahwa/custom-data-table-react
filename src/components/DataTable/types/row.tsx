@@ -1,4 +1,4 @@
 export interface Row {
-    id: string | number;
+    id: number;
     [key: string]: React.ReactNode | string | number;
 }

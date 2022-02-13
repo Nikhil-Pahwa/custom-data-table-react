@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import DataTable from './components/DataTable/DataTable';
-import MockComponent from './mock/MockComponent';
 import { MockDataSource } from './sources';
 
 import './App.scss';
@@ -10,7 +9,7 @@ function App() {
   let [selectedRowIndex, setSelectedRowIndex] = useState(null);
   let [selectedItems, setSelectedItems] = useState([]);
   let [mockRowData, setMockRowData] = useState([]);
-  let [mockColumnData, setMockColumnData] = useState([{
+  let mockColumnData = [{
     'id': 'albumId',
     'label': 'Album Id',
     'numeric': true,
@@ -37,13 +36,12 @@ function App() {
     'label': 'Thumbnail Url',
     'numeric': false,
     'width': '50px',
-  }]);
+  }];
 
   useEffect(() => {
     const sources = new MockDataSource();
     sources.fetch().then((data: any) => {
       setMockRowData(data);
-      // setMockRowData(data);
     });
   }, []);
 
@@ -60,32 +58,6 @@ function App() {
           setSelectedItems(selectedItems);
         }}
       />
-      {/* <DataTable columns={[{
-        'id': 'product', // Uniq ID to identify column
-        'label': 'Product',
-        'numeric': false,
-        'width': '10px',
-      }, {
-        'id': 'price',
-        'label': 'Price',
-        'numeric': true, // Right Align
-      }]}
-        rows={[{
-          'id': 'some_id1',
-
-          'price': 15.2
-        }, {
-          'id': 'some_id2',
-          'price': <MockComponent />
-        }]}
-        onRowClick={(row: any, index: any) => {
-          setSelectedRow(row);
-          setSelectedRowIndex(index);
-        }}
-        onSelectionChanges={(selectedItems: any) => {
-          setSelectedItems(selectedItems);
-        }}
-      /> */}
       {(selectedRowIndex || selectedItems.length > 0) && <div className="output">
         {selectedRowIndex &&
           <>

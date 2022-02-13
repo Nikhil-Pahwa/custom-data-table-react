@@ -22,7 +22,7 @@ describe('DataTableBody', () => {
     ];
 
     const renderComponent = () => {
-        return render(<DataTableBody rows={mockRowData} numberedColumn={[]} isSelectedAll={false} isControlledCheckbox={false} />);
+        return render(<DataTableBody rows={mockRowData} numberedColumn={[]} selectedRowsIds={[]} />);
     };
 
     it('should able to render table body properly', () => {

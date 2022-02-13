@@ -1,7 +1,6 @@
 /* eslint-disable testing-library/no-node-access */
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import DataTable from '../DataTable';
-import { Row } from '../types'
 
 describe('DataTable', () => {
     const mockRowData = [
@@ -49,7 +48,7 @@ describe('DataTable', () => {
     const rowClickSpy = jest.fn();
 
     const renderComponent = () => {
-        return render(<DataTable columns={mockColumnData} rows={mockRowData} onRowClick={rowClickSpy} onSelectionChanges={function (selectedRowsIds: string[]): void { }} />);
+        return render(<DataTable columns={mockColumnData} rows={mockRowData} onRowClick={rowClickSpy} onSelectionChanges={function (selectedRowsIds: number[]): void { }} />);
     };
 
     it('should able to render table header properly', () => {

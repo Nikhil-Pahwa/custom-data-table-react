@@ -6,14 +6,17 @@ import './DataTableBody.scss';
 export interface ITableBodyProperties {
     rows: Row[];
     numberedColumn: number[];
-    isSelectedAll: boolean;
-    isControlledCheckbox: boolean;
+    selectedRowsIds: number[];
 }
 
-const DataTableBody: React.FC<ITableBodyProperties> = ({ rows, numberedColumn, isSelectedAll, isControlledCheckbox }) => {
+const DataTableBody: React.FC<ITableBodyProperties> = ({ rows, numberedColumn, selectedRowsIds }) => {
 
     const isNumberedColumn = (index: number) => {
         return numberedColumn.indexOf(index) > -1;
+    }
+
+    const isSelectboxChecked = (row: any) => {
+        return (selectedRowsIds.indexOf(row.id) > -1);
     }
 
     const renderRowItem = (row: Row) => {
@@ -25,7 +28,7 @@ const DataTableBody: React.FC<ITableBodyProperties> = ({ rows, numberedColumn, i
     const renderTableRows = () => {
         return rows.map((row: Row, index: number) => {
             return <tr key={row.id} data-row-index={index} data-row-id={row['id']}>
-                <td><DataTableCheckbox isChecked={isSelectedAll} isControlled={isControlledCheckbox} /></td>
+                <td><DataTableCheckbox isChecked={isSelectboxChecked(row)} /></td>
                 {renderRowItem(row)}
             </tr>
         });

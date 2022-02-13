@@ -49,6 +49,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Click on record</h1>
       <DataTable columns={mockColumnData}
         rows={mockRowData}
         onRowClick={(row: any, index: any) => {
@@ -88,10 +89,10 @@ function App() {
       {(selectedRowIndex || selectedItems.length > 0) && <div className="output">
         {selectedRowIndex &&
           <>
-            <p className='output__selectedRowIndex'>Row Index: {selectedRowIndex}</p>
-            <p className='output__selectedRow'>Selected Row: {JSON.stringify(selectedRow)}</p>
+            <p className='output__selectedRowIndex'><b>Clicked Row Index:</b> {selectedRowIndex}</p>
+            <p className='output__selectedRow'><b>Clicked Row Info:</b> {JSON.stringify(selectedRow)}</p>
           </>}
-        {selectedItems.length > 0 && <p className='output__selectedItems'>Selected Items: {selectedItems.toString()}</p>}
+        {selectedItems.length > 0 && <p className='output__selectedItems'><b>Selected Rows ID:</b> {selectedItems.toString()}</p>}
       </div>}
     </div >
   );

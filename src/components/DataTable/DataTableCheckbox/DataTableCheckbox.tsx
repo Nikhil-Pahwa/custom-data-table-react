@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import './DataTableCheckbox.scss';
 
 export interface ITableCheckboxProperties {
     isChecked?: boolean;

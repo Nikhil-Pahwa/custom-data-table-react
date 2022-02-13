@@ -3,6 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import DataTableHeader from './DataTableHeader/DataTableHeader';
 import DataTableBody from './DataTableBody/DataTableBody';
+import DataTableLoader from './DataTableLoader/DataTableLoader';
 import { DATA_BATCH_SIZE, NODE_TYPES, ATTRIBUTE_TYPES, CUSTOM_ATTRIBUTE_TYPES } from './constants';
 import { Row, Column } from './types';
 
@@ -122,7 +123,7 @@ const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, 
                 dataLength={partialDataSet.length}
                 next={getNextDataSet}
                 hasMore={hasMoreDataToLoad}
-                loader={<h4>Loading...</h4>}
+                loader={<DataTableLoader />}
                 scrollableTarget="scrollableSection"
             >
                 <table onClick={onTableClick}>

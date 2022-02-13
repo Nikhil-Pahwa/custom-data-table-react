@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { ATTRIBUTE_TYPES } from '../../constants';
 import DataTableBody from '../DataTableBody';
 
-fdescribe('DataTableBody', () => {
+describe('DataTableBody', () => {
     const mockRowData = [
         {
             "albumId": 1,

@@ -20,6 +20,7 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
     const DATA_LENGTH = 15;
     const [partialDataSet, setPartialDataSet] = useState(Array())
     const [counter, setCounter] = useState(0);
+    const [numberColumns, setNumberColumns] = useState(Array());
 
     const [selectedItemsIds, setSelectedItemsIds] = useState(Array());
 
@@ -78,6 +79,16 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
         setNextDataSet();
     }, [rows]);
 
+    useEffect(() => {
+        let numberColumns: number[] = [];
+        columns.map((column, i) => {
+            if (column.numeric) {
+                numberColumns.push(i);
+            }
+        });
+        setNumberColumns(numberColumns);
+    }, [columns]);
+
     return (
         <div className="data-table" id="scrollableDiv">
             <InfiniteScroll
@@ -89,7 +100,7 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
             >
                 <table onClick={onTableClick}>
                     <DataTableHeader columns={columns} />
-                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} />}
+                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} numberedColumn={numberColumns} />}
                 </table>
             </InfiniteScroll>
         </div>

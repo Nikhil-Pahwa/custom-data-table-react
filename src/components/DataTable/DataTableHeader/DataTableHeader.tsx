@@ -16,7 +16,8 @@ const DataTableHeader: React.FC<ITableHeaderProperties> = ({ columns }) => {
         return columns.map((column: Column) => {
             return <th key={column.id} style={getHeaderStyle(column)}>{column.label}</th>
         });
-    }
+    };
+
     return (
         <thead>
             <tr>

@@ -13,7 +13,7 @@ function App() {
   let [mockColumnData, setMockColumnData] = useState([{
     'id': 'albumId',
     'label': 'Album Id',
-    'numeric': false,
+    'numeric': true,
     'width': '70px',
   }, {
     'id': 'id',
@@ -30,12 +30,12 @@ function App() {
   {
     'id': 'url',
     'label': 'Url',
-    'numeric': true,
+    'numeric': false,
   },
   {
     'id': 'thumbnailUrl',
     'label': 'Thumbnail Url',
-    'numeric': true,
+    'numeric': false,
     'width': '50px',
   }]);
 

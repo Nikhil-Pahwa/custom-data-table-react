@@ -5,13 +5,18 @@ import './DataTableBody.scss';
 
 export interface ITableBodyProperties {
     rows: Row[];
+    numberedColumn: number[];
 }
 
-const DataTableBody: React.FC<ITableBodyProperties> = ({ rows }) => {
+const DataTableBody: React.FC<ITableBodyProperties> = ({ rows, numberedColumn }) => {
+
+    const isNumberedColumn = (index: number) => {
+        return numberedColumn.indexOf(index) > -1;
+    }
 
     const renderRowItem = (row: Row) => {
-        return Object.keys(row).map((rowItem) => {
-            return <td>{row[rowItem]}</td>
+        return Object.keys(row).map((rowItem, index) => {
+            return <td className={`${isNumberedColumn(index) ? 'right-align' : ''}`}>{row[rowItem]}</td>
         });
     }
 

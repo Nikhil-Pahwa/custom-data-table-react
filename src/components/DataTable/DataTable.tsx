@@ -21,14 +21,14 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
     const [partialDataSet, setPartialDataSet] = useState(Array())
     const [counter, setCounter] = useState(0);
     const [numberColumns, setNumberColumns] = useState(Array());
-
+    const [isSelectedAll, setIsSelectedAll] = useState(false);
     const [selectedItemsIds, setSelectedItemsIds] = useState(Array());
+    const [isControlledCheckbox, setIsControlledCheckbox] = useState(false);
 
     const setNextDataSet = () => {
         if (rows.length > (counter + DATA_LENGTH)) {
             const nextDataSet = rows.slice(counter, counter + DATA_LENGTH);
             if (partialDataSet.length > 0) {
-                // setPartialDataSet([...partialDataSet, nextDataSet]);
                 setPartialDataSet(partialDataSet.concat(nextDataSet));
             } else {
                 setPartialDataSet([...nextDataSet]);
@@ -50,6 +50,16 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
                 selectedItemsIds.splice(index, 1);
                 setSelectedItemsIds([...selectedItemsIds]);
             }
+            setIsControlledCheckbox(false);
+        } else {
+            // Select All Checkbox clicked
+            if (isChecked) {
+                setSelectedItemsIds([...partialDataSet]);
+            } else {
+                setSelectedItemsIds([]);
+            }
+            setIsSelectedAll(isChecked);
+            setIsControlledCheckbox(true);
         }
     };
 
@@ -100,7 +110,7 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
             >
                 <table onClick={onTableClick}>
                     <DataTableHeader columns={columns} />
-                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} numberedColumn={numberColumns} />}
+                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} numberedColumn={numberColumns} isSelectedAll={isSelectedAll} isControlledCheckbox={isControlledCheckbox} />}
                 </table>
             </InfiniteScroll>
         </div>

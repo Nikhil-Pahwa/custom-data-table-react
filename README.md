@@ -1,6 +1,15 @@
 # custom-data-table-react
 Reusable data table component build in react 
 
+## SPECIFICATION
+
+* Should have provision to right align numeric fields in column
+* Should be able to set column width and if not set width should auto adjust itself.
+* Should have an event when row is clicked.
+* Should be able to select rows using checkboxes in rows or using select all checkbox in header.
+* Should have provision to infinite scroll
+* Table should be designed for scale, i.e. should be able to handle 50,000 rows.
+* Test cases.
 ## Available Scripts
 
 In the project directory, you can run:
@@ -38,8 +47,3 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

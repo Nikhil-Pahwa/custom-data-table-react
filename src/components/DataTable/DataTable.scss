@@ -1,0 +1,22 @@
+@import "../../styles/main.scss";
+
+.data-table {
+    width: 70%;
+    background-color: $table-bg-color;
+    border: 2px solid $table-border-color;
+    border-radius: 5px;
+    table {
+        color: $table-text-color;
+        padding: 20px;
+        margin: 0 auto;
+    }
+    th,td {
+        border-bottom: 1px solid $table-row-border-color;
+        padding: 15px;
+    }
+}
+
+#scrollableSection {
+    max-height: 500px;
+    overflow: auto;
+}

@@ -3,13 +3,13 @@ Reusable data table component build in react
 
 ## SPECIFICATION
 
-● Should have provision to right align numeric fields in column
-● Should be able to set column width and if not set width should auto adjust itself.
-● Should have an event when row is clicked.
-● Should be able to select rows using checkboxes in rows or using select all checkbox in header.
-● Should have provision to infinite scroll
-● Table should be designed for scale, i.e. should be able to handle 50,000 rows.
-● Test cases.
+* Should have provision to right align numeric fields in column
+* Should be able to set column width and if not set width should auto adjust itself.
+* Should have an event when row is clicked.
+* Should be able to select rows using checkboxes in rows or using select all checkbox in header.
+* Should have provision to infinite scroll
+* Table should be designed for scale, i.e. should be able to handle 50,000 rows.
+* Test cases.
 ## Available Scripts
 
 In the project directory, you can run:

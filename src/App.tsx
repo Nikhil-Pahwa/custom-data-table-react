@@ -14,7 +14,7 @@ function App() {
     'id': 'albumId',
     'label': 'Album Id',
     'numeric': false,
-    'width': '10px',
+    'width': '70px',
   }, {
     'id': 'id',
     'label': 'Id',
@@ -25,7 +25,7 @@ function App() {
     'id': 'title',
     'label': 'Title',
     'numeric': false,
-    'width': '1550px',
+    'width': '450px',
   },
   {
     'id': 'url',
@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     const sources = new MockDataSource();
     sources.fetch().then((data: any) => {
-      setMockRowData(data.slice(0, 100));
+      setMockRowData(data);
       // setMockRowData(data);
     });
   }, []);
@@ -91,7 +91,7 @@ function App() {
             <p className='output__selectedRowIndex'>Row Index: {selectedRowIndex}</p>
             <p className='output__selectedRow'>Selected Row: {JSON.stringify(selectedRow)}</p>
           </>}
-        {selectedItems.length > 0 && <p className='output__selectedItems'>Selected Items: {selectedItems}</p>}
+        {selectedItems.length > 0 && <p className='output__selectedItems'>Selected Items: {selectedItems.toString()}</p>}
       </div>}
     </div >
   );

@@ -1,7 +1,4 @@
 .data-table {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     table {
         border: 2px solid #E8EAEC;
@@ -10,9 +7,15 @@
         width: 70%;
         padding: 20px;
         border-radius: 5px;
+        margin: 0 auto;
     }
     th,td {
         border-bottom: 1px solid #F6F7F8;
         padding: 15px;
     }
+}
+
+#scrollableDiv {
+    max-height: 500px;
+    overflow: auto;
 }

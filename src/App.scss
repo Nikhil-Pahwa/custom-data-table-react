@@ -7,6 +7,8 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  max-height: 200px;
+  overflow: hidden;
   .output {
     color: #fff;
     text-align: left;

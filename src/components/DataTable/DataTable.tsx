@@ -79,12 +79,13 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
     }, [rows]);
 
     return (
-        <div className="data-table">
+        <div className="data-table" id="scrollableDiv">
             <InfiniteScroll
                 dataLength={partialDataSet.length}
                 next={setNextDataSet}
                 hasMore={true}
                 loader={<h4>Loading...</h4>}
+                scrollableTarget="scrollableDiv"
             >
                 <table onClick={onTableClick}>
                     <DataTableHeader columns={columns} />

@@ -1,62 +1,77 @@
 import { useState, useEffect } from 'react';
-import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import DataTableHeader from './DataTableHeader/DataTableHeader';
 import DataTableBody from './DataTableBody/DataTableBody';
+import { DATA_BATCH_SIZE, NODE_TYPES, ATTRIBUTE_TYPES, CUSTOM_ATTRIBUTE_TYPES } from './constants';
 import { Row, Column } from './types';
 
 import './DataTable.scss';
 
-
-export interface ITableProperties {
+export interface IDataTableProperties {
     columns: Column[];
     rows: Row[];
     onRowClick: (rowData: Row, rowIndex: number) => void;
-    onSelectionChanges: (selectedItems: string[]) => void;
+    onSelectionChanges: (selectedRowsIds: string[]) => void;
 }
 
-const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSelectionChanges }) => {
+const DataTable: React.FC<IDataTableProperties> = ({ columns, rows, onRowClick, onSelectionChanges }) => {
 
-    const DATA_LENGTH = 15;
-    const [partialDataSet, setPartialDataSet] = useState(Array())
-    const [counter, setCounter] = useState(0);
-    const [numberColumns, setNumberColumns] = useState(Array());
+    /*
+    *   List of selected rows ids
+    */
+    const [selectedRowsIds, setSelectedRowsIds] = useState<string[]>([]);
+
+    /*
+    *   Partial Data set states for infinte scrolling
+    */
+    const [partialDataSet, setPartialDataSet] = useState<Row[]>([]);
+    const [nextDataSetStartIndex, setNextDataSetStartIndex] = useState<number>(0);
+    const [hasMoreDataToLoad, setHasMoreDataToLoad] = useState<boolean>(true);
+
+    /*
+    * Columns which are numbered type for right alignment
+    */
+    const [numberTypeColumnsIndexes, setNumberTypeColumnsIndexes] = useState<number[]>([]);
+
     const [isSelectedAll, setIsSelectedAll] = useState(false);
-    const [selectedItemsIds, setSelectedItemsIds] = useState(Array());
     const [isControlledCheckbox, setIsControlledCheckbox] = useState(false);
 
-    const setNextDataSet = () => {
-        if (rows.length > (counter + DATA_LENGTH)) {
-            const nextDataSet = rows.slice(counter, counter + DATA_LENGTH);
-            if (partialDataSet.length > 0) {
-                setPartialDataSet(partialDataSet.concat(nextDataSet));
+    const getNextDataSet = () => {
+        if (rows.length > 0) {
+            let nextDataSet = [];
+            if (rows.length > (nextDataSetStartIndex + DATA_BATCH_SIZE)) {
+                nextDataSet = rows.slice(nextDataSetStartIndex, nextDataSetStartIndex + DATA_BATCH_SIZE);
+                setHasMoreDataToLoad(true);
             } else {
-                setPartialDataSet([...nextDataSet]);
+                nextDataSet = rows.slice(nextDataSetStartIndex);
+                setHasMoreDataToLoad(false);
             }
 
-            setCounter(counter + DATA_LENGTH);
+            setPartialDataSet([...partialDataSet, ...nextDataSet]);
+            setNextDataSetStartIndex(nextDataSetStartIndex + DATA_BATCH_SIZE);
         }
     };
 
-    const handleCheckboxClicks = (event: any) => {
+    const handleCheckboxClick = (event: any) => {
         const isChecked = event.target.checked;
         const dataRowId = event.target.parentElement.parentElement.getAttribute('data-row-id');
 
         if (dataRowId) {
             if (isChecked) {
-                setSelectedItemsIds([...selectedItemsIds, dataRowId]);
+                setSelectedRowsIds([...selectedRowsIds, dataRowId]);
             } else {
-                const index = selectedItemsIds.indexOf(dataRowId);
-                selectedItemsIds.splice(index, 1);
-                setSelectedItemsIds([...selectedItemsIds]);
+                const index = selectedRowsIds.indexOf(dataRowId);
+                selectedRowsIds.splice(index, 1);
+                setSelectedRowsIds([...selectedRowsIds]);
             }
             setIsControlledCheckbox(false);
         } else {
             // Select All Checkbox clicked
             if (isChecked) {
-                setSelectedItemsIds([...partialDataSet]);
+                // setSelectedRowsIds([...partialDataSet]);
             } else {
-                setSelectedItemsIds([]);
+                setSelectedRowsIds([]);
             }
             setIsSelectedAll(isChecked);
             setIsControlledCheckbox(true);
@@ -65,52 +80,54 @@ const DataTable: React.FC<ITableProperties> = ({ columns, rows, onRowClick, onSe
 
     const handleTableRowClick = (event: any) => {
         const target = event.target.parentElement;
-        if (target.nodeName === 'TR') {
-            const selectedRow = rows.find((row) => row.id == target.getAttribute('data-row-id'));
+        if (target.nodeName === NODE_TYPES.TABLE_ROW) {
+            const selectedRow = rows.find((row) => row.id.toString() === target.getAttribute(CUSTOM_ATTRIBUTE_TYPES.ROWID));
             if (selectedRow) {
-                onRowClick(selectedRow, target.getAttribute('data-row-index'));
+                onRowClick(selectedRow, target.getAttribute(CUSTOM_ATTRIBUTE_TYPES.ROWINDEX));
             }
         }
     };
 
     const onTableClick = (event: any) => {
-        if (event.target.nodeName === 'INPUT' && event.target.getAttribute('type') === 'checkbox') {
-            handleCheckboxClicks(event);
+        if (event.target.nodeName === NODE_TYPES.INPUT && event.target.getAttribute('type') === ATTRIBUTE_TYPES.CHECKBOX) {
+            handleCheckboxClick(event);
         } else {
             handleTableRowClick(event);
         }
     };
 
     useEffect(() => {
-        onSelectionChanges([...selectedItemsIds]);
-    }, [selectedItemsIds]);
+        onSelectionChanges([...selectedRowsIds]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedRowsIds]);
 
     useEffect(() => {
-        setNextDataSet();
+        getNextDataSet();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rows]);
 
     useEffect(() => {
-        let numberColumns: number[] = [];
-        columns.map((column, i) => {
+        let numberTypeColumnsIndexesList: number[] = [];
+        columns.forEach((column: Column, index: number) => {
             if (column.numeric) {
-                numberColumns.push(i);
+                numberTypeColumnsIndexesList.push(index);
             }
         });
-        setNumberColumns(numberColumns);
+        setNumberTypeColumnsIndexes(numberTypeColumnsIndexesList);
     }, [columns]);
 
     return (
-        <div className="data-table" id="scrollableDiv">
+        <div className="data-table" id="scrollableSection">
             <InfiniteScroll
                 dataLength={partialDataSet.length}
-                next={setNextDataSet}
-                hasMore={true}
+                next={getNextDataSet}
+                hasMore={hasMoreDataToLoad}
                 loader={<h4>Loading...</h4>}
-                scrollableTarget="scrollableDiv"
+                scrollableTarget="scrollableSection"
             >
                 <table onClick={onTableClick}>
                     <DataTableHeader columns={columns} />
-                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} numberedColumn={numberColumns} isSelectedAll={isSelectedAll} isControlledCheckbox={isControlledCheckbox} />}
+                    {partialDataSet.length > 0 && <DataTableBody rows={partialDataSet} numberedColumn={numberTypeColumnsIndexes} isSelectedAll={isSelectedAll} isControlledCheckbox={isControlledCheckbox} />}
                 </table>
             </InfiniteScroll>
         </div>

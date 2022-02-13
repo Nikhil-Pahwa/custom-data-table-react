@@ -3,11 +3,11 @@ import { Column } from '../types';
 
 import './DataTableHeader.scss';
 
-export interface ITableHeaderProperties {
+export interface IDataTableHeaderProperties {
     columns: Column[];
 }
 
-const DataTableHeader: React.FC<ITableHeaderProperties> = ({ columns }) => {
+const DataTableHeader: React.FC<IDataTableHeaderProperties> = ({ columns }) => {
     const getHeaderStyle = (column: Column) => {
         return { minWidth: (column.width) ? column.width : 'auto' };
     };

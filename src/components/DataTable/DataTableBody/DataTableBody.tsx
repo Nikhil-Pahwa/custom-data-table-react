@@ -24,7 +24,7 @@ const DataTableBody: React.FC<ITableBodyProperties> = ({ rows, numberedColumn, i
 
     const renderTableRows = () => {
         return rows.map((row: Row, index: number) => {
-            return <tr data-row-index={index} data-row-id={row["id"]}>
+            return <tr data-row-index={index} data-row-id={row['id']}>
                 <td><DataTableCheckbox isChecked={isSelectedAll} isControlled={isControlledCheckbox} /></td>
                 {renderRowItem(row)}
             </tr>

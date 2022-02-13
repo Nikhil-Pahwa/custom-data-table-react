@@ -18,13 +18,13 @@ const DataTableBody: React.FC<ITableBodyProperties> = ({ rows, numberedColumn, i
 
     const renderRowItem = (row: Row) => {
         return Object.keys(row).map((rowItem, index) => {
-            return <td className={`${isNumberedColumn(index) ? 'right-align' : ''}`}>{row[rowItem]}</td>
+            return <td key={index} className={`${isNumberedColumn(index) ? 'right-align' : ''}`}>{row[rowItem]}</td>
         });
     }
 
     const renderTableRows = () => {
         return rows.map((row: Row, index: number) => {
-            return <tr data-row-index={index} data-row-id={row['id']}>
+            return <tr key={row.id} data-row-index={index} data-row-id={row['id']}>
                 <td><DataTableCheckbox isChecked={isSelectedAll} isControlled={isControlledCheckbox} /></td>
                 {renderRowItem(row)}
             </tr>
